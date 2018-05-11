@@ -3,6 +3,8 @@ const express_graphql = require('express-graphql');
 const {makeExecutableSchema} = require('graphql-tools');
 const {restaurantsData, itemsData} = require('./data/data')
 
+const PORT = process.env.PORT || 4000;
+
 const typeDefs = `
   type Query {
     restaurant(id: Int!): Restaurant
@@ -37,9 +39,11 @@ const schema = makeExecutableSchema({typeDefs, resolvers})
 
 const app = express();
 
+app.get('/', (req, res) => res.send('Hello World'));
+
 app.use('/graphql', express_graphql({
 	schema: schema,
 	graphiql: true
 }));
 
-app.listen(4000, () => console.log('Server running on port 4000'));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
