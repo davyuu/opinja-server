@@ -1,75 +1,44 @@
 const express = require('express');
 const express_graphql = require('express-graphql');
-const { buildSchema } = require('graphql');
+const {makeExecutableSchema} = require('graphql-tools');
+const {restaurantsData, itemsData} = require('./data/data')
 
-const schema = buildSchema(`
+const typeDefs = `
   type Query {
     restaurant(id: Int!): Restaurant
-    restaurants(topic: String): [Restaurant]
-  },
+    restaurants: [Restaurant]
+  }
+  type Mutation {
+    updateRecommend(restaurantId: Int!, itemId: Int!, recommend: Int!): Item
+  }
   type Restaurant {
-    id: Int
+    id: Int!
     name: String
-    items: [String]
+    items: [Item]
   }
-`);
+  type Item {
+    id: Int!
+    name: String
+    recommend: Int
+  }
+`;
 
-const restaurantData = [
-    {
-        id: 1,
-        name: 'Restaurant1',
-        items: [
-          'item1',
-          'item2',
-          'item3',
-        ],
-    },
-    {
-        id: 2,
-        name: 'Restaurant2',
-        items: [
-          'item1',
-          'item2',
-          'item3',
-        ],
-    },
-    {
-        id: 3,
-        name: 'Restaurant3',
-        items: [
-          'item1',
-          'item2',
-          'item3',
-        ],
-    }
-]
-
-const getRestaurant = (args) => {
-  const id = args.id;
-  return restaurantData.filter(restaurant => {
-    return restaurant.id == id;
-  })[0];
-}
-
-const getRestaurants = (args) => {
-  if (args.topic) {
-    const topic = args.topic;
-    return restaurantData.filter(restaurant => restaurant.topic === topic);
-  } else {
-    return restaurantData;
+const resolvers = {
+  Query: {
+    restaurant: (_, {id}) => restaurantsData.find(r => r.id == id),
+    restaurants: () => restaurantsData
+  },
+  Restaurant: {
+    items: (restaurant) => itemsData.filter(i => i.restaurantId == restaurant.id)
   }
 }
 
-const root = {
-  restaurant: getRestaurant,
-  restaurants: getRestaurants
-};
+const schema = makeExecutableSchema({typeDefs, resolvers})
 
 const app = express();
 
 app.use('/graphql', express_graphql({
 	schema: schema,
-  rootValue: root,
 	graphiql: true
 }));
 
