@@ -1,9 +1,11 @@
-const express = require('express');
-const express_graphql = require('express-graphql');
-const {makeExecutableSchema} = require('graphql-tools');
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const express_graphql = require('express-graphql')
+const {makeExecutableSchema} = require('graphql-tools')
 const {restaurantsData, itemsData} = require('./data/data')
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000
 
 const typeDefs = `
   type Query {
@@ -23,7 +25,7 @@ const typeDefs = `
     name: String
     recommend: Int
   }
-`;
+`
 
 const resolvers = {
   Query: {
@@ -37,13 +39,15 @@ const resolvers = {
 
 const schema = makeExecutableSchema({typeDefs, resolvers})
 
-const app = express();
+const app = express()
 
-app.get('/', (req, res) => res.send('Hello World'));
-
+app.use(cors())
+app.use(bodyParser.json())
 app.use('/graphql', express_graphql({
 	schema: schema,
 	graphiql: true
-}));
+}))
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.get('/', (req, res) => res.send('Hello World'))
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
