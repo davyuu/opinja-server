@@ -3,7 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const express_graphql = require('express-graphql')
 const {makeExecutableSchema} = require('graphql-tools')
-const {restaurantsData, itemsData, recommendationsData} = require('./data/data')
+const {restaurantsData, itemsData, ratingsData} = require('./data/data')
 
 const PORT = process.env.PORT || 4000
 
@@ -23,7 +23,7 @@ const typeDefs = `
   type Item {
     id: Int!
     name: String
-    recommendation: Float
+    rating: Float
   }
 `
 
@@ -36,11 +36,11 @@ const resolvers = {
     items: (restaurant) => itemsData.filter(i => i.restaurantId == restaurant.id)
   },
   Item: {
-    recommendation: (item) => {
+    rating: (item) => {
       let length = 0;
-      const sum = recommendationsData.reduce((total, r) => {
+      const sum = ratingsData.reduce((total, r) => {
         if (r.itemId === item.id) {
-          total += r.recommendation
+          total += r.rating
           length++
         }
         return total

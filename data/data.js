@@ -1,9 +1,9 @@
 const restaurantsData = require('./restaurants')
 const itemsData = require('./items')
-const recommendationsData = require('./recommendations')
+const ratingsData = require('./ratings')
 
 module.exports = {
 	restaurantsData,
 	itemsData,
-	recommendationsData
+	ratingsData
 }
