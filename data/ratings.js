@@ -13,6 +13,11 @@ const ratingsData = [
 		id: 3,
 		itemId: 1,
 		rating: 5
+	},
+	{
+		id: 4,
+		itemId: 2,
+		rating: 4
 	}
 ]
 
