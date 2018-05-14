@@ -45,7 +45,7 @@ const resolvers = {
         }
         return total
       }, 0)
-      return sum / length
+      return sum === 0 ? null : Math.round(sum / length * 100) / 100
     }
   }
 }
