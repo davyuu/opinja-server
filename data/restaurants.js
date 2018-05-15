@@ -1,23 +1,19 @@
 const restaurantsData = [
 	{
 		id: 1,
-		name: 'restaurant1',
-		items: [1, 2, 3]
+		name: 'Congee Queen'
 	},
 	{
 		id: 2,
-		name: 'restaurant2',
-    items: [4, 5, 6]
+		name: 'Song Cook\'s'
 	},
 	{
 		id: 3,
-		name: 'restaurant3',
-    items: [7, 8, 9]
+		name: 'Magic Noodle'
 	},
 	{
 		id: 4,
-		name: 'restaurant4',
-    items: [10, 11, 12]
+		name: 'Kinton Ramen'
 	}
 ]
 

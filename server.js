@@ -3,7 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const express_graphql = require('express-graphql')
 const {makeExecutableSchema} = require('graphql-tools')
-const {restaurantsData, itemsData} = require('./data/data')
+const {restaurantsData, itemsData, ratingsData} = require('./data/data')
 
 const PORT = process.env.PORT || 4000
 
@@ -11,9 +11,8 @@ const typeDefs = `
   type Query {
     restaurant(id: Int!): Restaurant
     restaurants: [Restaurant]
-  }
-  type Mutation {
-    updateRecommend(restaurantId: Int!, itemId: Int!, recommend: Int!): Item
+    items: [Item]
+    ratings: [Rating]
   }
   type Restaurant {
     id: Int!
@@ -23,17 +22,54 @@ const typeDefs = `
   type Item {
     id: Int!
     name: String
-    recommend: Int
+    rating: Float
+  }
+  type Rating {
+    id: Int!
+    itemId: Int
+    rating: Float
+  }
+  type Mutation {
+    addRating(itemId: Int!, rating: Float!): Rating
   }
 `
 
 const resolvers = {
   Query: {
     restaurant: (_, {id}) => restaurantsData.find(r => r.id == id),
-    restaurants: () => restaurantsData
+    restaurants: () => restaurantsData,
+    items: () => itemsData,
+    ratings: () => ratingsData
   },
   Restaurant: {
     items: (restaurant) => itemsData.filter(i => i.restaurantId == restaurant.id)
+  },
+  Item: {
+    rating: (item) => {
+      let length = 0;
+      const sum = ratingsData.reduce((total, r) => {
+        if (r.itemId === item.id) {
+          total += r.rating
+          length++
+        }
+        return total
+      }, 0)
+      return sum === 0 ? null : Math.round(sum / length * 100) / 100
+    }
+  },
+  Mutation: {
+    addRating: (_, {itemId, rating}) => {
+      if(rating < 0 || rating > 5) {
+        throw new Error(`Invalid rating of ${rating}`)
+      }
+      const item = {
+        id: ratingsData.length + 1,
+        itemId: itemId,
+        rating: rating
+      }
+      ratingsData.push(item)
+      return item
+    }
   }
 }
 
