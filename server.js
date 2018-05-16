@@ -22,7 +22,7 @@ const typeDefs = `
   type Item {
     id: Int!
     name: String
-    rating: Float
+    overallRating: Float
   }
   type Rating {
     id: Int!
@@ -30,7 +30,7 @@ const typeDefs = `
     rating: Float
   }
   type Mutation {
-    addRating(itemId: Int!, rating: Float!): Rating
+    addRating(id: Int, itemId: Int!, rating: Float!): Rating
   }
 `
 
@@ -45,7 +45,7 @@ const resolvers = {
     items: (restaurant) => itemsData.filter(i => i.restaurantId == restaurant.id)
   },
   Item: {
-    rating: (item) => {
+    overallRating: (item) => {
       let length = 0;
       const sum = ratingsData.reduce((total, r) => {
         if (r.itemId === item.id) {
@@ -58,17 +58,26 @@ const resolvers = {
     }
   },
   Mutation: {
-    addRating: (_, {itemId, rating}) => {
+    addRating: (_, {id, itemId, rating}) => {
       if(rating < 0 || rating > 5) {
         throw new Error(`Invalid rating of ${rating}`)
       }
-      const item = {
-        id: ratingsData.length + 1,
-        itemId: itemId,
-        rating: rating
+      let newRating;
+      ratingsData.forEach(r => {
+        if(r.id === id) {
+          r.rating = rating
+          newRating = r;
+        }
+      })
+      if(!newRating) {
+        newRating = {
+          id: ratingsData.length + 1,
+          itemId: itemId,
+          rating: rating
+        }
+        ratingsData.push(newRating)
       }
-      ratingsData.push(item)
-      return item
+      return newRating
     }
   }
 }
@@ -80,8 +89,8 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/graphql', express_graphql({
-	schema: schema,
-	graphiql: true
+  schema: schema,
+  graphiql: true
 }))
 
 app.get('/', (req, res) => res.send('Hello World'))
