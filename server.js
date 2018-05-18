@@ -3,7 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const express_graphql = require('express-graphql')
 const {makeExecutableSchema} = require('graphql-tools')
-const {restaurantsData, itemsData, ratingsData} = require('./data/data')
+const {restaurantsData, itemsData, ratingsData, usersData} = require('./data/data')
 
 const PORT = process.env.PORT || 4000
 
@@ -13,6 +13,7 @@ const typeDefs = `
     restaurants: [Restaurant]
     items: [Item]
     ratings: [Rating]
+    users: [User]
   }
   type Restaurant {
     id: Int!
@@ -29,8 +30,17 @@ const typeDefs = `
     itemId: Int
     rating: Float
   }
+  type User {
+    email: String
+    name: String
+    provider: String
+    providerId: String
+    providerPic: String
+    token: String
+  }
   type Mutation {
     addRating(id: Int, itemId: Int!, rating: Float!): Rating
+    loginUser(email: String, name: String, provider: String, providerId: String, providerPic: String, token: String): User
   }
 `
 
@@ -39,7 +49,8 @@ const resolvers = {
     restaurant: (_, {id}) => restaurantsData.find(r => r.id == id),
     restaurants: () => restaurantsData,
     items: () => itemsData,
-    ratings: () => ratingsData
+    ratings: () => ratingsData,
+    users: () => usersData
   },
   Restaurant: {
     items: (restaurant) => itemsData.filter(i => i.restaurantId == restaurant.id)
@@ -72,12 +83,32 @@ const resolvers = {
       if(!newRating) {
         newRating = {
           id: ratingsData.length + 1,
-          itemId: itemId,
-          rating: rating
+          itemId,
+          rating
         }
         ratingsData.push(newRating)
       }
       return newRating
+    },
+    loginUser: (_, {email, name, provider, providerId, providerPic, token}) => {
+      let user;
+      usersData.forEach(u => {
+        if(u.email === email) {
+          user = u
+        }
+      })
+      if(!user) {
+        user = {
+          email,
+          name,
+          provider,
+          providerId,
+          providerPic,
+          token
+        }
+        usersData.push(user)
+      }
+      return user
     }
   }
 }
