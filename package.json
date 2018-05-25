@@ -19,6 +19,7 @@
     "mongoose": "^5.1.2"
   },
   "devDependencies": {
+    "csvtojson": "^2.0.0",
     "nodemon": "^1.17.4"
   }
 }

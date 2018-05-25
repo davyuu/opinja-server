@@ -11,9 +11,9 @@ const ratingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: models.user
   },
-  rating: {
+  value: {
     type: Number,
-    required: [true, 'Rating field is required']
+    required: [true, 'Value field is required']
   }
 })
 

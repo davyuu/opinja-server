@@ -1,5 +1,8 @@
+const csv = require('csvtojson')
 const {restaurantsData, itemsData, ratingsData, usersData} = require('./')
 const {Restaurant, Item, Rating, User} = require('../models')
+
+const pathToRestaurantsCSV = './restaurants.csv'
 
 const onCreate = (res, err) => {
   if(err) {
@@ -44,9 +47,7 @@ function createRatings(res) {
   return Rating.create(ratingsData)
 }
 
-function initialize() {
-  console.log('initializing database')
-
+function createWithJS() {
   createRestaurant()
   .then(createItemsAndUsers)
   .then(createRatings)
@@ -54,6 +55,19 @@ function initialize() {
     console.log('ratings', ratings)
     console.log('\nsuccess\n')
   })
+}
+
+function createWithCSV() {
+  csv().fromFile(`${__dirname}/${pathToRestaurantsCSV}`).then(restaurants => {
+    Restaurant.create(restaurants).then(restaurants => console.log('restaurants', restaurants))
+  })
+}
+
+function initialize() {
+  console.log('initializing database')
+
+  createWithJS()
+  // createWithCSV()
 
   return true
 }

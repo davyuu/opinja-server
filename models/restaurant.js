@@ -6,7 +6,13 @@ const restaurantSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Name field is required']
-  }
+  },
+  location: String,
+  number: String,
+  contact: String,
+  description: String,
+  yelp: Number,
+  sellingPoint: String
   // add in geo location
 })
 
