@@ -3,6 +3,10 @@ const models = require('./models')
 const Schema = mongoose.Schema
 
 const itemSchema = new Schema({
+  categoryId: {
+    type: Schema.Types.ObjectId,
+    ref: models.category
+  },
   restaurantId: {
     type: Schema.Types.ObjectId,
     ref: models.restaurant

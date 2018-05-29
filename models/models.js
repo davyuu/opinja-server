@@ -1,5 +1,6 @@
 const models = {
-	restaurant: 'restaurant',
+  restaurant: 'restaurant',
+	category: 'category',
 	item: 'item',
 	rating: 'rating',
   user: 'user'

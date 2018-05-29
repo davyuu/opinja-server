@@ -2,6 +2,7 @@ const types = `
   type Query {
     restaurant(id: String!): Restaurant
     restaurants: [Restaurant]
+    categories: [Category]
     items: [Item]
     ratings: [Rating]
     users: [User]
@@ -9,11 +10,17 @@ const types = `
   type Restaurant {
     id: String!
     name: String
+    location: String
     items: [Item]
+  }
+  type Category {
+    id: String!
+    name: String
   }
   type Item {
     id: String!
     name: String
+    category: Category
     description: String
     price: Float
     overallRating: Float

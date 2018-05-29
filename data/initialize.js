@@ -1,31 +1,26 @@
 const csv = require('csvtojson')
-const {restaurantsData, itemsData, ratingsData, usersData} = require('./')
-const {Restaurant, Item, Rating, User} = require('../models')
+const {restaurantsData, categoriesData, itemsData, ratingsData, usersData} = require('./')
+const {Restaurant, Category, Item, Rating, User} = require('../models')
 
 const pathToRestaurantsCSV = './restaurants.csv'
 
-const onCreate = (res, err) => {
-  if(err) {
-    console.log('err', err)
-    return null
-  } else {
-    console.log('res', res)
-    return res
-  }
-}
-
 function createRestaurant() {
-  console.log('\ncreating restaurants\n')
+  console.log('\ncreating restaurants and categories\n')
   console.log('restaurantsData', restaurantsData)
-  return Restaurant.create(restaurantsData)
+  console.log('categoriesData', categoriesData)
+  return Promise.all([Restaurant.create(restaurantsData), Category.create(categoriesData)])
 }
 
-function createItemsAndUsers(restaurants) {
+function createItemsAndUsers(res) {
+  const restaurants = res[0]
+  const categories = res[1]
   console.log('restaurants', restaurants)
+  console.log('categories', categories)
 
   console.log('\ncreating items and users\n')
   itemsData.forEach((item) => {
     item.restaurantId = restaurants[item.restaurantId - 1]
+    item.categoryId = categories[item.categoryId - 1]
   })
   console.log('itemsData', itemsData)
   console.log('usersData', usersData)

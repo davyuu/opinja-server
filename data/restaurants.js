@@ -2,22 +2,22 @@ const restaurantsData = [
   {
     id: 1,
     name: 'Congee Queen',
-    location: ''
+    location: '3850 Sheppard Ave E'
   },
   {
     id: 2,
     name: 'Song Cook\'s',
-    location: ''
+    location: '72 Steeles Ave W'
   },
   {
     id: 3,
     name: 'Magic Noodle',
-    location: ''
+    location: '2190 McNicoll Ave'
   },
   {
     id: 4,
     name: 'Kinton Ramen',
-    location: ''
+    location: ' 5165 Yonge St'
   }
 ]
 

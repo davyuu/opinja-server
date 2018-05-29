@@ -1,9 +1,10 @@
-const {Restaurant, Item, Rating, User} = require('../../models')
+const {Restaurant, Category, Item, Rating, User} = require('../../models')
 
 const resolvers = {
   Query: {
     restaurant: (_, {id}) => Restaurant.findOne({_id: id}),
     restaurants: () => Restaurant.find({}),
+    categories: () => Category.find({}),
     items: () => Item.find({}),
     ratings: () => Rating.find({}),
     users: () => User.find({})
@@ -12,6 +13,7 @@ const resolvers = {
     items: (restaurant) => Item.find({restaurantId: restaurant.id})
   },
   Item: {
+    category: (item) => Category.findOne({_id: item.categoryId}),
     overallRating: (item) => {
       return new Promise((resolve, reject) => {
         Rating.find({itemId: item.id}, (err, ratings) => {
