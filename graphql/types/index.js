@@ -16,6 +16,7 @@ const types = `
   type Category {
     id: String!
     name: String
+    order: Int
   }
   type Item {
     id: String!
@@ -35,14 +36,13 @@ const types = `
     id: String
     email: String
     name: String
-    provider: String
+    photoURL: String
     providerId: String
-    providerPic: String
     token: String
   }
   type Mutation {
     addRating(id: String, itemId: String!, userId: String, value: Float!): Rating
-    loginUser(email: String, name: String, provider: String, providerId: String, providerPic: String, token: String): User
+    loginUser(email: String, name: String, photoURL: String, providerId: String, token: String): User
   }
 `
 

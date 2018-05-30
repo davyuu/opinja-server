@@ -1,15 +1,18 @@
 const categoriesData = [
   {
     id: 1,
-    name: 'Appetizers'
+    name: 'Appetizers',
+    order: 1
   },
   {
     id: 2,
-    name: 'Mains'
+    name: 'Mains',
+    order: 2
   },
   {
     id: 3,
-    name: 'Desserts'
+    name: 'Desserts',
+    order: 3
   }
 ]
 

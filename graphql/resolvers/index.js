@@ -52,7 +52,7 @@ const resolvers = {
         }
       })
     },
-    loginUser: (_, {email, name, provider, providerId, providerPic, token}) => {
+    loginUser: (_, {email, name, photoURL, providerId, token}) => {
       console.log('\nloginUser\n')
       return new Promise((resolve, reject) => {
         User.findOne({email}, (err, user) => {
@@ -60,7 +60,7 @@ const resolvers = {
           if(err) reject(err)
           if(user) resolve(user)
           else {
-            User.create({email, name, provider, providerId, providerPic, token}, (err, user) => {
+            User.create({email, name, photoURL, providerId, token}, (err, user) => {
               console.log('create', user)
               if(err) reject(err)
               resolve(user)

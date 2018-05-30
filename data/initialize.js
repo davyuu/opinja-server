@@ -35,6 +35,7 @@ function createRatings(res) {
 
   console.log('\ncreating ratings\n')
   ratingsData.forEach((rating) => {
+    console.log('rating', rating)
     rating.userId = users[rating.userId - 1]
     rating.itemId = items[rating.itemId - 1]
   })
