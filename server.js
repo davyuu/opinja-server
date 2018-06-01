@@ -9,8 +9,8 @@ const initialize = require('./data/initialize')
 
 const PORT = process.env.PORT || 4000
 
-// const MONGODB_URI = 'mongodb://david:1994@ds135540.mlab.com:35540/ispoll'
-const MONGODB_URI = 'mongodb://localhost/ispoll'
+const MONGODB_URI = 'mongodb://david:1994@ds135540.mlab.com:35540/ispoll'
+// const MONGODB_URI = 'mongodb://localhost/ispoll'
 mongoose.connect(MONGODB_URI)
 mongoose.Promise = global.Promise
 
