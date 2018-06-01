@@ -1,5 +1,7 @@
 const {Restaurant, Category, Item, Rating, User} = require('../../models')
 
+const pointsMultiplier = 10
+
 const options = {
   new: true,
   upsert: true
@@ -12,6 +14,7 @@ const resolvers = {
     categories: () => Category.find({}),
     items: () => Item.find({}),
     ratings: () => Rating.find({}),
+    user: (_, {id}) => User.findOne({_id: id}),
     users: () => User.find({})
   },
   Restaurant: {
@@ -34,6 +37,15 @@ const resolvers = {
   Rating: {
     item: (rating) => Item.findOne({_id: rating.itemId}),
     user: (rating) => User.findOne({_id: rating.userId})
+  },
+  User: {
+    points: (user) => {
+      return new Promise((resolve, reject) => {
+        Rating.count({userId: user.id}, (err, count) => {
+          resolve(count * pointsMultiplier)
+        })
+      })
+    }
   },
   Mutation: {
     addRating: (_, {id, itemId, userId, value}) => {
@@ -74,20 +86,20 @@ const resolvers = {
         })
       })
     },
-    setInstagramHandle: (_, {userId, instagramHandle}) => {
+    setInstagramHandle: (_, {id, instagramHandle}) => {
       console.log('\setInstagramHandle\n')
       return new Promise((resolve, reject) => {
-        User.findByIdAndUpdate({_id: userId}, {instagramHandle}, options, (err, user) => {
+        User.findByIdAndUpdate({_id: id}, {instagramHandle}, options, (err, user) => {
           console.log('findByIdAndUpdate', user)
           if(err) reject(err)
           resolve(user)
         })
       })
     },
-    setTwitterHandle: (_, {userId, twitterHandle}) => {
+    setTwitterHandle: (_, {id, twitterHandle}) => {
       console.log('\setTwitterHandle\n')
       return new Promise((resolve, reject) => {
-        User.findByIdAndUpdate({_id: userId}, {twitterHandle}, options, (err, user) => {
+        User.findByIdAndUpdate({_id: id}, {twitterHandle}, options, (err, user) => {
           console.log('findByIdAndUpdate', user)
           if(err) reject(err)
           resolve(user)
