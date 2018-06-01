@@ -1,5 +1,12 @@
 const {Restaurant, Category, Item, Rating, User} = require('../../models')
 
+const pointsMultiplier = 10
+
+const options = {
+  new: true,
+  upsert: true
+}
+
 const resolvers = {
   Query: {
     restaurant: (_, {id}) => Restaurant.findOne({_id: id}),
@@ -7,6 +14,7 @@ const resolvers = {
     categories: () => Category.find({}),
     items: () => Item.find({}),
     ratings: () => Rating.find({}),
+    user: (_, {id}) => User.findOne({_id: id}),
     users: () => User.find({})
   },
   Restaurant: {
@@ -30,6 +38,15 @@ const resolvers = {
     item: (rating) => Item.findOne({_id: rating.itemId}),
     user: (rating) => User.findOne({_id: rating.userId})
   },
+  User: {
+    points: (user) => {
+      return new Promise((resolve, reject) => {
+        Rating.count({userId: user.id}, (err, count) => {
+          resolve(count * pointsMultiplier)
+        })
+      })
+    }
+  },
   Mutation: {
     addRating: (_, {id, itemId, userId, value}) => {
       console.log('\naddRating\n')
@@ -38,7 +55,7 @@ const resolvers = {
       }
       return new Promise((resolve, reject) => {
         if(id) {
-          Rating.findByIdAndUpdate({_id: id}, {itemId, userId, value}, {upsert: true}, (err, rating) => {
+          Rating.findByIdAndUpdate({_id: id}, {itemId, userId, value}, options, (err, rating) => {
             console.log('findByIdAndUpdate', rating)
             if(err) reject(err)
             resolve(rating)
@@ -52,7 +69,7 @@ const resolvers = {
         }
       })
     },
-    loginUser: (_, {email, name, provider, providerId, providerPic, token}) => {
+    loginUser: (_, {email, name, photoURL, providerId, token}) => {
       console.log('\nloginUser\n')
       return new Promise((resolve, reject) => {
         User.findOne({email}, (err, user) => {
@@ -60,12 +77,32 @@ const resolvers = {
           if(err) reject(err)
           if(user) resolve(user)
           else {
-            User.create({email, name, provider, providerId, providerPic, token}, (err, user) => {
+            User.create({email, name, photoURL, providerId, token}, (err, user) => {
               console.log('create', user)
               if(err) reject(err)
               resolve(user)
             })
           }
+        })
+      })
+    },
+    setInstagramHandle: (_, {id, instagramHandle}) => {
+      console.log('\setInstagramHandle\n')
+      return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate({_id: id}, {instagramHandle}, options, (err, user) => {
+          console.log('findByIdAndUpdate', user)
+          if(err) reject(err)
+          resolve(user)
+        })
+      })
+    },
+    setTwitterHandle: (_, {id, twitterHandle}) => {
+      console.log('\setTwitterHandle\n')
+      return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate({_id: id}, {twitterHandle}, options, (err, user) => {
+          console.log('findByIdAndUpdate', user)
+          if(err) reject(err)
+          resolve(user)
         })
       })
     }

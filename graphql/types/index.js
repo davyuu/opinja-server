@@ -5,6 +5,7 @@ const types = `
     categories: [Category]
     items: [Item]
     ratings: [Rating]
+    user(id: String!): User
     users: [User]
   }
   type Restaurant {
@@ -16,6 +17,7 @@ const types = `
   type Category {
     id: String!
     name: String
+    order: Int
   }
   type Item {
     id: String!
@@ -35,14 +37,18 @@ const types = `
     id: String
     email: String
     name: String
-    provider: String
+    photoURL: String
     providerId: String
-    providerPic: String
     token: String
+    instagramHandle: String
+    twitterHandle: String
+    points: Int
   }
   type Mutation {
     addRating(id: String, itemId: String!, userId: String, value: Float!): Rating
-    loginUser(email: String, name: String, provider: String, providerId: String, providerPic: String, token: String): User
+    loginUser(email: String, name: String, photoURL: String, providerId: String, token: String): User
+    setInstagramHandle(id: String!, instagramHandle: String!): User
+    setTwitterHandle(id: String!, twitterHandle: String!): User
   }
 `
 

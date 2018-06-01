@@ -5,10 +5,11 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
   email: String,
   name: String,
-  provider: String,
+  photoURL: String,
   providerId: String,
-  providerPic: String,
-  token: String
+  token: String,
+  instagramHandle: String,
+  twitterHandle: String
 })
 
 const User = mongoose.model(models.user, userSchema)
