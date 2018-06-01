@@ -1,5 +1,10 @@
 const {Restaurant, Category, Item, Rating, User} = require('../../models')
 
+const options = {
+  new: true,
+  upsert: true
+}
+
 const resolvers = {
   Query: {
     restaurant: (_, {id}) => Restaurant.findOne({_id: id}),
@@ -38,7 +43,7 @@ const resolvers = {
       }
       return new Promise((resolve, reject) => {
         if(id) {
-          Rating.findByIdAndUpdate({_id: id}, {itemId, userId, value}, {upsert: true}, (err, rating) => {
+          Rating.findByIdAndUpdate({_id: id}, {itemId, userId, value}, options, (err, rating) => {
             console.log('findByIdAndUpdate', rating)
             if(err) reject(err)
             resolve(rating)
@@ -66,6 +71,26 @@ const resolvers = {
               resolve(user)
             })
           }
+        })
+      })
+    },
+    setInstagramHandle: (_, {userId, instagramHandle}) => {
+      console.log('\setInstagramHandle\n')
+      return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate({_id: userId}, {instagramHandle}, options, (err, user) => {
+          console.log('findByIdAndUpdate', user)
+          if(err) reject(err)
+          resolve(user)
+        })
+      })
+    },
+    setTwitterHandle: (_, {userId, twitterHandle}) => {
+      console.log('\setTwitterHandle\n')
+      return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate({_id: userId}, {twitterHandle}, options, (err, user) => {
+          console.log('findByIdAndUpdate', user)
+          if(err) reject(err)
+          resolve(user)
         })
       })
     }

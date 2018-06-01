@@ -7,7 +7,9 @@ const userSchema = new Schema({
   name: String,
   photoURL: String,
   providerId: String,
-  token: String
+  token: String,
+  instagramHandle: String,
+  twitterHandle: String
 })
 
 const User = mongoose.model(models.user, userSchema)

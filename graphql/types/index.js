@@ -39,10 +39,14 @@ const types = `
     photoURL: String
     providerId: String
     token: String
+    instagramHandle: String
+    twitterHandle: String
   }
   type Mutation {
     addRating(id: String, itemId: String!, userId: String, value: Float!): Rating
     loginUser(email: String, name: String, photoURL: String, providerId: String, token: String): User
+    setInstagramHandle(userId: String!, instagramHandle: String!): User
+    setTwitterHandle(userId: String!, twitterHandle: String!): User
   }
 `
 
