@@ -3,13 +3,17 @@ const models = require('./models')
 const Schema = mongoose.Schema
 
 const ratingSchema = new Schema({
-  itemId: {
-    type: Schema.Types.ObjectId,
-    ref: models.item
-  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: models.user
+  },
+  restaurantId: {
+    type: Schema.Types.ObjectId,
+    ref: models.restaurant
+  },
+  itemId: {
+    type: Schema.Types.ObjectId,
+    ref: models.item
   },
   value: {
     type: Number,

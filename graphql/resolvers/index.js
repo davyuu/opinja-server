@@ -18,7 +18,8 @@ const resolvers = {
     users: () => User.find({})
   },
   Restaurant: {
-    items: (restaurant) => Item.find({restaurantId: restaurant.id})
+    items: (restaurant) => Item.find({restaurantId: restaurant.id}),
+    numRatings: (restaurant) => Rating.count({restaurantId: restaurant.id})
   },
   Item: {
     category: (item) => Category.findOne({_id: item.categoryId}),
@@ -35,8 +36,9 @@ const resolvers = {
     }
   },
   Rating: {
-    item: (rating) => Item.findOne({_id: rating.itemId}),
-    user: (rating) => User.findOne({_id: rating.userId})
+    user: (rating) => User.findOne({_id: rating.userId}),
+    restaurant: (rating) => Restaurant.findOne({_id: rating.restaurantId}),
+    item: (rating) => Item.findOne({_id: rating.itemId})
   },
   User: {
     points: (user) => {
@@ -48,20 +50,20 @@ const resolvers = {
     }
   },
   Mutation: {
-    addRating: (_, {id, itemId, userId, value}) => {
+    addRating: (_, {id, userId, restaurantId, itemId, value}) => {
       console.log('\naddRating\n')
       if(value < 0 || value > 5) {
         throw new Error(`Invalid value of ${value}`)
       }
       return new Promise((resolve, reject) => {
         if(id) {
-          Rating.findByIdAndUpdate({_id: id}, {itemId, userId, value}, options, (err, rating) => {
+          Rating.findByIdAndUpdate({_id: id}, {userId, restaurantId, itemId, value}, options, (err, rating) => {
             console.log('findByIdAndUpdate', rating)
             if(err) reject(err)
             resolve(rating)
           })
         } else {
-          Rating.create({itemId, userId, value}, (err, rating) => {
+          Rating.create({userId, restaurantId, itemId, value}, (err, rating) => {
             console.log('create', rating)
             if(err) reject(err)
             resolve(rating)

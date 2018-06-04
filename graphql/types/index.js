@@ -13,6 +13,7 @@ const types = `
     name: String
     location: String
     items: [Item]
+    numRatings: Int
   }
   type Category {
     id: String!
@@ -29,8 +30,9 @@ const types = `
   }
   type Rating {
     id: String!
-    item: Item
     user: User
+    restaurant: Restaurant
+    item: Item
     value: Float
   }
   type User {
@@ -45,7 +47,7 @@ const types = `
     points: Int
   }
   type Mutation {
-    addRating(id: String, itemId: String!, userId: String, value: Float!): Rating
+    addRating(id: String, userId: String, restaurantId: String!, itemId: String!, value: Float!): Rating
     loginUser(email: String, name: String, photoURL: String, providerId: String, token: String): User
     setInstagramHandle(id: String!, instagramHandle: String!): User
     setTwitterHandle(id: String!, twitterHandle: String!): User
