@@ -7,10 +7,15 @@ const schema = require('./graphql')
 
 const initialize = require('./data/initialize')
 
+const env = process.env.NODE_ENV || 'dev'
 const PORT = process.env.PORT || 4000
 
-const MONGODB_URI = 'mongodb://david:1994@ds135540.mlab.com:35540/ispoll'
-// const MONGODB_URI = 'mongodb://localhost/ispoll'
+let MONGODB_URI
+if(env === 'prod') {
+  MONGODB_URI = 'mongodb://david:1994@ds135540.mlab.com:35540/ispoll'
+} else if(env === 'dev') {
+  MONGODB_URI = 'mongodb://localhost/ispoll'
+}
 mongoose.connect(MONGODB_URI)
 mongoose.Promise = global.Promise
 
@@ -30,4 +35,4 @@ app.get('/initialize', (req, res) => {
   res.send(result)
 })
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+app.listen(PORT, () => console.log(`Server running on port ${PORT} in ${env} mode`))
