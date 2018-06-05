@@ -4,7 +4,12 @@ const {Restaurant, Category, Item, Rating, User} = require('../models')
 
 const pathToRestaurantsCSV = './restaurants.csv'
 
-function createRestaurant() {
+let restaurants = []
+let categories = []
+let items = []
+let users = []
+
+function createRestaurantsAndCategories() {
   console.log('\ncreating restaurants and categories\n')
   console.log('restaurantsData', restaurantsData)
   console.log('categoriesData', categoriesData)
@@ -12,8 +17,8 @@ function createRestaurant() {
 }
 
 function createItemsAndUsers(res) {
-  const restaurants = res[0]
-  const categories = res[1]
+  restaurants = res[0]
+  categories = res[1]
   console.log('restaurants', restaurants)
   console.log('categories', categories)
 
@@ -28,8 +33,8 @@ function createItemsAndUsers(res) {
 }
 
 function createRatings(res) {
-  const items = res[0]
-  const users = res[1]
+  items = res[0]
+  users = res[1]
   console.log('items', items)
   console.log('users', users)
 
@@ -37,6 +42,7 @@ function createRatings(res) {
   ratingsData.forEach((rating) => {
     console.log('rating', rating)
     rating.userId = users[rating.userId - 1]
+    rating.restaurantId = restaurants[rating.restaurantId - 1]
     rating.itemId = items[rating.itemId - 1]
   })
   console.log('ratingsData', ratingsData)
@@ -44,7 +50,7 @@ function createRatings(res) {
 }
 
 function createWithJS() {
-  createRestaurant()
+  createRestaurantsAndCategories()
   .then(createItemsAndUsers)
   .then(createRatings)
   .then(ratings => {
