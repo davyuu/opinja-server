@@ -8,6 +8,7 @@ const restaurantSchema = new Schema({
     required: [true, 'Name field is required']
   },
   location: String,
+  type: String,
   number: String,
   contact: String,
   description: String,

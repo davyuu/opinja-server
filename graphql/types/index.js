@@ -12,6 +12,7 @@ const types = `
     id: String!
     name: String
     location: String
+    type: String
     items: [Item]
     numRatings: Int
   }
