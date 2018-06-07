@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 4000
 
 let MONGODB_URI
 if(env === 'prod') {
-  MONGODB_URI = 'mongodb://david:1994@ds135540.mlab.com:35540/ispoll'
+  MONGODB_URI = 'mongodb://david:1994yu@ds247670.mlab.com:47670/opinja'
 } else if(env === 'dev') {
-  MONGODB_URI = 'mongodb://localhost/ispoll'
+  MONGODB_URI = 'mongodb://localhost/opinja'
 }
 mongoose.connect(MONGODB_URI)
 mongoose.Promise = global.Promise
