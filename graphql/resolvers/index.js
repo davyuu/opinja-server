@@ -74,7 +74,7 @@ const resolvers = {
     loginUser: (_, {email, name, photoURL, providerId, token}) => {
       console.log('\nloginUser\n')
       return new Promise((resolve, reject) => {
-        User.findOne({email}, (err, user) => {
+        User.findOneAndUpdate({email}, {name, photoURL, token}, options, (err, user) => {
           console.log('findOne', user)
           if(err) reject(err)
           if(user) resolve(user)
