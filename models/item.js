@@ -3,18 +3,12 @@ const models = require('./models')
 const Schema = mongoose.Schema
 
 const itemSchema = new Schema({
-  categoryId: {
-    type: Schema.Types.ObjectId,
-    ref: models.category
-  },
   restaurantId: {
     type: Schema.Types.ObjectId,
     ref: models.restaurant
   },
-  name: {
-    type: String,
-    required: [true, 'Name field is required'],
-  },
+  name: String,
+  category: String,
   description: String,
   price: Number
 })

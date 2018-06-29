@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const express_graphql = require('express-graphql')
 const schema = require('./graphql')
 
-const initialize = require('./data/initialize')
+const setup = require('./data/setup')
 
 const env = process.env.NODE_ENV || 'dev'
 const PORT = process.env.PORT || 4000
@@ -30,8 +30,13 @@ app.use('/graphql', express_graphql({
 
 app.get('/', (req, res) => res.send('Hello World'))
 
-app.get('/initialize', (req, res) => {
-  let result = initialize()
+// app.get('/initialize', (req, res) => {
+//   let result = initialize()
+//   res.send(result)
+// })
+
+app.get('/setup', (req, res) => {
+  let result = setup()
   res.send(result)
 })
 
