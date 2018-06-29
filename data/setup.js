@@ -1,8 +1,8 @@
 const csv = require('csvtojson')
 const {Restaurant, Category, Item, Rating, User} = require('../models')
 
-const pathToRestaurantsCSV = './CSV/sum_restaurants.csv'
-const pathToItemsCSV = './CSV/sum_items.csv'
+const pathToRestaurantsCSV = './csv/sum_restaurants.csv'
+const pathToItemsCSV = './csv/sum_items.csv'
 
 const items = []
 
