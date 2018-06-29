@@ -68,7 +68,7 @@ function createWithCSV() {
 function initialize() {
   console.log('initializing database')
 
-  createWithJS()
+  // createWithJS()
   // createWithCSV()
 
   return true

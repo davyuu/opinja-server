@@ -3,10 +3,8 @@ const models = require('./models')
 const Schema = mongoose.Schema
 
 const categorySchema = new Schema({
-  name: {
-    type: String,
-    required: [true, 'Name field is required'],
-  },
+  key: String,
+  name: String,
   order: Number
 })
 

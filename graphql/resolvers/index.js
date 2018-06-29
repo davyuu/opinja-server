@@ -11,7 +11,6 @@ const resolvers = {
   Query: {
     restaurant: (_, {id}) => Restaurant.findOne({_id: id}),
     restaurants: () => Restaurant.find({}),
-    categories: () => Category.find({}),
     items: () => Item.find({}),
     ratings: () => Rating.find({}),
     user: (_, {id}) => User.findOne({_id: id}),
@@ -22,7 +21,6 @@ const resolvers = {
     numRatings: (restaurant) => Rating.count({restaurantId: restaurant.id})
   },
   Item: {
-    category: (item) => Category.findOne({_id: item.categoryId}),
     overallRating: (item) => {
       return new Promise((resolve, reject) => {
         Rating.find({itemId: item.id}, (err, ratings) => {
