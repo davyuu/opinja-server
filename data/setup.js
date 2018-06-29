@@ -1,4 +1,4 @@
-const CSV = require('CSVtojson')
+const csv = require('csvtojson')
 const {Restaurant, Category, Item, Rating, User} = require('../models')
 
 const pathToRestaurantsCSV = './CSV/sum_restaurants.csv'
@@ -8,7 +8,7 @@ const items = []
 
 function createRestaurants() {
   return new Promise((resolve, reject) => {
-    CSV().fromFile(`${__dirname}/${pathToRestaurantsCSV}`).then(restaurantsCSV => {
+    csv().fromFile(`${__dirname}/${pathToRestaurantsCSV}`).then(restaurantsCSV => {
       const restaurantsData = []
       const restaurantKeys = {}
       restaurantsCSV.forEach((restaurantCSV, i) => {
@@ -32,7 +32,7 @@ function createRestaurants() {
 
 function createItems(restaurantKeys) {
   return new Promise((resolve, reject) => {
-    CSV().fromFile(`${__dirname}/${pathToItemsCSV}`).then(itemsCSV => {
+    csv().fromFile(`${__dirname}/${pathToItemsCSV}`).then(itemsCSV => {
       const itemsData = []
       itemsCSV.forEach(itemCSV => {
         const {restaurant_name, lunch_price, lunch_menu, dinner_price, dinner_menu} = itemCSV
